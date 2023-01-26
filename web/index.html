@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>recipio-lang</title>
+</head>
+
+<body>
+  <textarea id="input" rows="10" cols="50"></textarea>
+  <pre><code id="output"></code></pre>
+  <pre style="background-color: lightpink;"><code id="error"></code></pre>
+  <script type="module">
+    import init, { transpile } from "./pkg/recipio_lang.js";
+    (async () => {
+      await init();
+
+      const sample = `# おにぎりのレシピ
+お米
+> 研ぐ > 炊飯器に入れて炊く # 無洗米なら研がなくていい
+>+ 塩ひとつまみ
+> 形を三角に整える
+>?+ (梅干し > 種を除く)`;
+      document.getElementById("input").textContent = sample;
+      document.getElementById("output").textContent = transpile(sample);
+
+      document.getElementById("input").addEventListener("input", (e) => {
+        const output = document.getElementById("output");
+        const error = document.getElementById("error");
+        output.textContent = "";
+        error.textContent = "";
+        try {
+          const result = transpile(e.target.value);
+          output.textContent = result;
+        } catch (e) {
+          error.textContent = e;
+        }
+      });
+    })();
+  </script>
+</body>
+
+</html>
