@@ -55,7 +55,6 @@ impl<'a> fmt::Display for Instruction<'a> {
 }
 
 fn recipe(input: &str) -> IResult<&str, Recipe> {
-    println!("recipe {}", input);
     map(
         pair(
             preceded(skip, is_not(">)\r\n#")),
@@ -72,7 +71,6 @@ fn recipe(input: &str) -> IResult<&str, Recipe> {
 }
 
 fn instruction(input: &str) -> IResult<&str, Instruction> {
-    println!("instruction {}", input);
     alt((
         map(
             pair(
@@ -100,7 +98,6 @@ fn instruction(input: &str) -> IResult<&str, Instruction> {
 }
 
 fn comment(input: &str) -> IResult<&str, &str> {
-    println!("comment {:?}", input);
     preceded(
         char('#'),
         map(opt(is_not("\r\n")), Option::unwrap_or_default),
@@ -108,7 +105,6 @@ fn comment(input: &str) -> IResult<&str, &str> {
 }
 
 fn skip(input: &str) -> IResult<&str, ()> {
-    println!("skip {:?}", input);
     delimited(multispace0, value((), opt(comment)), multispace0)(input)
 }
 
